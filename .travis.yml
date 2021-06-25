@@ -1,0 +1,22 @@
+language: python
+python:
+  - "3.7"
+addons:
+  ssh_known_hosts: 68.183.91.18
+before_install:
+  - chmod 600 travis_rsa
+  - mv travis_rsa ~/.ssh/id_rsa
+install:
+  - pip install -r requirements.txt
+services:
+  - postgresql
+script:
+  - "true"
+after_success:
+  - bash ./deploy.sh
+notifications:
+  email:
+    recipients:
+      - abhi_ap@hotmail.com
+    on_success: always
+    on_failure: always
