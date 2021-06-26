@@ -52,7 +52,7 @@ async def get_all_messages(db: Session = Depends(get_db)):
         records = db.query(Message).order_by(Message.date_created.desc()).all()
 
         if not records:
-            return None
+            return []
 
         for record in records:
 
