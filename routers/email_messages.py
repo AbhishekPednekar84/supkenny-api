@@ -75,7 +75,11 @@ async def send_email_to_couple(
 ):
     message = Mail(
         from_email=os.getenv("FROM_EMAIL"),
-        to_emails=[os.getenv("EMAIL_GROOM"), os.getenv("EMAIL_BRIDE")],
+        to_emails=[
+            os.getenv("EMAIL_BRIDE"),
+            os.getenv("EMAIL_BRIDE2"),
+            os.getenv("EMAIL_GROOM"),
+        ],
     )
 
     sender_name = email_message.sender_name
