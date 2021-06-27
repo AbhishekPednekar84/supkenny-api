@@ -2,6 +2,7 @@ import os
 import random
 from typing import Optional
 
+from better_profanity import profanity
 from fastapi import BackgroundTasks
 from fastapi import HTTPException
 from fastapi import status
@@ -78,7 +79,7 @@ async def send_email_to_couple(
     )
 
     sender_name = email_message.sender_name
-    sender_message = email_message.sender_message
+    sender_message = profanity.censor(email_message.sender_message)
     year = email_message.year
 
     # Dynamic data in the templates
