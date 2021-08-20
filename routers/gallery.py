@@ -1,3 +1,5 @@
+import os
+
 import cloudinary.api
 from fastapi import status
 
@@ -10,7 +12,7 @@ async def get_haldi_images():
     cloudinary_init.initalize_cloudinary()
 
     return cloudinary.api.resources(
-        prefix="gallery/haldi_prod",
+        prefix="gallery/haldi_" + os.getenv("GALLERY_ENV"),
         type="upload",
         context=True,
         max_results=100,
@@ -22,7 +24,7 @@ async def get_wedding_images():
     cloudinary_init.initalize_cloudinary()
 
     return cloudinary.api.resources(
-        prefix="gallery/wedding_prod",
+        prefix="gallery/wedding_" + os.getenv("GALLERY_ENV"),
         type="upload",
         context=True,
         max_results=100,
@@ -34,7 +36,7 @@ async def get_reception_images():
     cloudinary_init.initalize_cloudinary()
 
     return cloudinary.api.resources(
-        prefix="gallery/reception_prod",
+        prefix="gallery/reception_" + os.getenv("GALLERY_ENV"),
         type="upload",
         context=True,
         max_results=100,
