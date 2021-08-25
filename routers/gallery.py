@@ -16,6 +16,7 @@ async def get_haldi_images():
         type="upload",
         context=True,
         max_results=100,
+        direction="asc",
     )
 
 
@@ -28,6 +29,7 @@ async def get_wedding_images():
         type="upload",
         context=True,
         max_results=100,
+        direction="asc",
     )
 
 
@@ -40,4 +42,5 @@ async def get_reception_images():
         type="upload",
         context=True,
         max_results=100,
+        direction="asc",
     )

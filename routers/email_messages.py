@@ -1,5 +1,6 @@
 import os
 import random
+from typing import List
 from typing import Optional
 
 from better_profanity import profanity
@@ -32,6 +33,16 @@ class EmailToCouple(EmailBase):
 class EmailFromCouple(EmailBase):
     recipient_name: str
     recipient_email: str
+
+    class Config:
+        orm_mode = True
+
+
+class EmailReminder(EmailBase):
+    recipient_email: List[str]
+    link_wedding: str
+    link_reception: str
+    link_gallery: str
 
     class Config:
         orm_mode = True
@@ -94,6 +105,32 @@ async def send_email_to_couple(
     }
 
     message.template_id = os.getenv("EMAIL_TO_COUPLE_TEMPLATE")
+
+    try:
+        background_task.add_task(send_message, message)
+        return status.HTTP_202_ACCEPTED
+    except Exception:
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN, detail="The email could not be sent"
+        )
+
+
+@router.post("/email/reminder", status_code=status.HTTP_202_ACCEPTED)
+async def send_reminder_email(
+    email_message: EmailReminder, background_task: BackgroundTasks
+):
+    message = Mail(
+        from_email=os.getenv("FROM_EMAIL"),
+        to_emails=email_message.recipient_email,
+    )
+
+    message.dynamic_template_data = {
+        "link_wedding": email_message.link_wedding,
+        "link_reception": email_message.link_reception,
+        "link_gallery": email_message.link_gallery,
+    }
+
+    message.template_id = os.getenv("REMINDER_EMAIL")
 
     try:
         background_task.add_task(send_message, message)
